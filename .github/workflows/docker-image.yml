@@ -30,7 +30,7 @@ jobs:
 
     - name: Build and tag image to Amazon ECR
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REGISTRY: "public.ecr.aws/t6p6b9i9"
         ECR_REPOSITORY: lidor-web-project
         IMAGE_TAG: latest
       run: |
@@ -39,7 +39,7 @@ jobs:
     - name: Push Amazon ECR
       if: github.event_name != 'pull_request'
       env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REGISTRY: "public.ecr.aws/t6p6b9i9"
         ECR_REPOSITORY: lidor-web-project
         IMAGE_TAG: latest
       run: |
