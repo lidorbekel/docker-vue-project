@@ -55,7 +55,7 @@ jobs:
       uses: unfor19/install-aws-cli-action@master
     - run: |
         instance_id=$(aws ec2 describe-instances --region eu-west-1 --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
-        echo "instance_id=$instance_id >> $GITHUB_ENV
+        echo "instance_id=$instance_id" >> $GITHUB_ENV
       shell: bash
       
     - name: AWS SSM Send-Command
@@ -75,5 +75,6 @@ jobs:
     - name: Get the outputs
       if: github.event_name != 'pull_request'
       run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
+      
       
       
