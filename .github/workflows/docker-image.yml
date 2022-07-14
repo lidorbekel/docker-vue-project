@@ -9,7 +9,7 @@ jobs:
   
   build:
     
-    name: Build Image
+    name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
     steps:
