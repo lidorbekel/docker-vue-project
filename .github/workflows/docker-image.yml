@@ -48,5 +48,29 @@ jobs:
         IMAGE_TAG: latest
       run: |
         docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+        
+    - name: get instance id
+      if: github.event_name != 'pull_request'
+      id: get-instance-id
+      uses: unfor19/install-aws-cli-action@master
+    - run: instanceId=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
+      shell: bash
+      
+    - name: AWS SSM Send-Command
+      if: github.event_name != 'pull_request'
+      uses: peterkimzz/aws-ssm-send-command@master
+      id: ssm
+      with:
+        aws-region: eu-west-1
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        instance-ids: ${{ steps.get-instance-id.outputs.instanceId }}
+        working-directory: /persistent
+        command: docker-compose down && docker-compose up -d
+        comment: Happy Composing !
 
-
+    # Catch SSM outputs
+    - name: Get the outputs
+      if: github.event_name != 'pull_request'
+      run: echo "The Command id is ${{ steps.ssm.outputs.command-id }}"
+      
