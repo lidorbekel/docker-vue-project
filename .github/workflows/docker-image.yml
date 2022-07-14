@@ -22,7 +22,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+        aws-region: eu-west-1
 
     - name: Login to Amazon ECR Public
       id: login-ecr-public
@@ -53,7 +53,7 @@ jobs:
       if: github.event_name != 'pull_request'
       id: get-instance-id
       uses: unfor19/install-aws-cli-action@master
-    - run: instanceId=$(aws ec2 describe-instances --region eu-west-1 --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
+    - run: aws ec2 describe-instances --region eu-west-1 --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text
       shell: bash
       
     - name: AWS SSM Send-Command
