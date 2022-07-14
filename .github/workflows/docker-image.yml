@@ -53,7 +53,7 @@ jobs:
       if: github.event_name != 'pull_request'
       id: get-instance-id
       uses: unfor19/install-aws-cli-action@master
-    - run: instanceId=$(aws ec2 describe-instances --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
+    - run: instanceId=$(aws ec2 describe-instances --region eu-west-1 --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
       shell: bash
       
     - name: AWS SSM Send-Command
