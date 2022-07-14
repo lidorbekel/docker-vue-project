@@ -57,8 +57,16 @@ jobs:
         instance_id=$(aws ec2 describe-instances --region eu-west-1 --filters Name=instance-state-name,Values=running Name=tag:Name,Values=lidor-web-demo --query 'Reservations[].Instances[].InstanceId' --output text)
         echo "instance_id=$instance_id" >> $GITHUB_ENV
       shell: bash
-      
-    - name: AWS SSM Send-Command
+  
+  deploy:
+    
+    name: deploy
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+    
+    - name: Deployment - AWS SSM Send-Command 
       if: github.event_name != 'pull_request'
       uses: peterkimzz/aws-ssm-send-command@master
       id: ssm
