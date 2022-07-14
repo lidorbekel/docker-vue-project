@@ -68,7 +68,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         instance-ids: ${{ env.instance_id }}
         working-directory: /persistent
-        command: docker-compose down && docker-compose up -d
+        command: docker-compose down && docker-compose pull && docker-compose up -d
         comment: Happy Composing !
 
     # Catch SSM outputs
